@@ -13,7 +13,7 @@ public class SocketConfig implements WebSocketMessageBrokerConfigurer {
 
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
-        registry.addEndpoint("/gs-guide-websocket").setAllowedOrigins("127.0.0.1").withSockJS();
+        registry.addEndpoint("/gs-guide-websocket").setAllowedOrigins("0.0.0.0").withSockJS();
     }
 
     @Override
