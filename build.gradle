@@ -4,14 +4,7 @@ plugins {
 	id 'java'
 }
 
-jar {
-  manifest {
-    attributes(
-      
-      'Main-Class': 'com.microservice.alimentos.alimentos.AlimentosApplication'
-    )
-  }
-}
+
 group = 'com.microservice.alimentos'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '11'
