@@ -22,6 +22,7 @@ public interface ProductClient {
 
     default ResponseEntity<List<Product>> getProductFallback(RuntimeException e) {
         List<Product> products=new ArrayList<>();
+        products.add(Product.builder().build());
         return ResponseEntity.ok(products);
     }
 }
