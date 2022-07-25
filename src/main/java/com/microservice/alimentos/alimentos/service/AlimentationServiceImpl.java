@@ -1,5 +1,6 @@
 package com.microservice.alimentos.alimentos.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,9 +26,14 @@ public class AlimentationServiceImpl implements AlimentationService {
     UserClient userClient;
 
     @Override
-    public List<Alimentation> findAllInvoice() {
+    public List<Alimentation> findAllAlimentations() {
         List<Alimentation> alimentations = alimentationRespository.findAll();
-
+        for (Alimentation alimentation : alimentations) {
+            List<Product> products = productClient.getProduct(alimentation.getName()).getBody();
+            alimentation.setProductos(products==null?new ArrayList<Product>():products);
+            User user=userClient.getUser(alimentation.getUserId()).getBody();
+            alimentation.setUser(user==null?new User():user);
+        }
 
         return alimentations;
     }

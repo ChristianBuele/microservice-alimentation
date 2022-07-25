@@ -48,8 +48,8 @@ public class AlimentationController {
     }
 
     @GetMapping("/alimentation")
-    public ResponseEntity<List<Alimentation>> getAlimentation(@PathVariable("id") Integer id) {
-        List<Alimentation> alimentations = alimentationRespository.findAll();
+    public ResponseEntity<List<Alimentation>> getAlimentation() {
+        List<Alimentation> alimentations = alimentationService.findAllAlimentations();
 
         return new ResponseEntity<List<Alimentation>>(alimentations, HttpStatus.OK);
     }
