@@ -1,11 +1,17 @@
 package com.microservice.alimentos.alimentos.entity;
 
+import java.util.Date;
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.PrePersist;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 import javax.validation.Valid;
 import javax.validation.constraints.Max;
@@ -55,13 +61,18 @@ public class Alimentation {
     @Column(name = "user_id")
     private Integer userId;
 
-    @Positive(message = "Es necesario el producto")
-    @Column(name = "product_id")
-    private Integer productId;
-
     @Transient
-    Product producto;
+    List<Product> productos;
 
     @Transient
     User user;
+
+    @Column(name = "create_at")
+    @Temporal(TemporalType.DATE)
+    private Date createAt;
+
+    @PrePersist
+    public void prePersist() {
+        this.createAt = new Date();
+    }
 }

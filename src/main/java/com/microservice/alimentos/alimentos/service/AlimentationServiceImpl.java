@@ -37,10 +37,10 @@ public class AlimentationServiceImpl implements AlimentationService {
         // TODO Auto-generated method stub
         Alimentation alimentation = alimentationRespository.findById(id).orElse(null);
         if (alimentation != null) {
-            User user=userClient.getUser(2).getBody();
-            alimentation.setUser(user);
-            Product product=productClient.getProduct(alimentation.getName()).getBody();
-            alimentation.setProducto(product);
+            // User user=userClient.getUser(2).getBody();
+            // alimentation.setUser(user);
+            List<Product> products=productClient.getProduct(alimentation.getName()).getBody();
+            alimentation.setProductos(products);
         }
         return alimentation;
     }
