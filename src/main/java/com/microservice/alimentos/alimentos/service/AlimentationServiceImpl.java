@@ -2,6 +2,7 @@ package com.microservice.alimentos.alimentos.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -28,14 +29,14 @@ public class AlimentationServiceImpl implements AlimentationService {
     @Override
     public List<Alimentation> findAllAlimentations() {
         List<Alimentation> alimentations = alimentationRespository.findAll();
-        for (Alimentation alimentation : alimentations) {
+        List<Alimentation> alimentationsNew=alimentations.stream().map(alimentation->{
             List<Product> products = productClient.getProduct(alimentation.getName()).getBody();
             alimentation.setProductos(products==null?new ArrayList<Product>():products);
-            User user=userClient.getUser(alimentation.getUserId()).getBody();
-            alimentation.setUser(user==null?new User():user);
-        }
+            return alimentation;
+        }).collect(Collectors.toList());
+       
 
-        return alimentations;
+        return alimentationsNew;
     }
 
     @Override
