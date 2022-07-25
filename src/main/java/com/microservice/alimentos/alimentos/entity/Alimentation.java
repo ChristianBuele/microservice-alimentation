@@ -41,11 +41,23 @@ public class Alimentation {
     @Max(value = 3,message = "El máximo es 3")
     Integer comida;
 
+    @Column(name = "name")
+    @NonNull
+    private String name;
+
 
     @Valid
     @Column(name = "porcion")
     @Positive(message = "La porcion debe ser un numero positivo")
     Double porcion;
+
+    @Positive(message = "Es necesario el id usuario")
+    @Column(name = "user_id")
+    private Integer userId;
+
+    @Positive(message = "Es necesario el producto")
+    @Column(name = "product_id")
+    private Integer productId;
 
     @Transient
     Product producto;

@@ -17,6 +17,7 @@ import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,6 +28,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.microservice.alimentos.alimentos.Sockets.model.Message;
 import com.microservice.alimentos.alimentos.entity.Alimentation;
 import com.microservice.alimentos.alimentos.repository.AlimentationRespository;
+import com.microservice.alimentos.alimentos.service.AlimentationServiceImpl;
 
 @Controller
 public class AlimentationController {
@@ -35,8 +37,10 @@ public class AlimentationController {
     private SimpMessagingTemplate template;
 
     @Autowired
-    private AlimentationRespository alimentationRespository;
+    private AlimentationServiceImpl alimentationService;
 
+    @Autowired
+    private AlimentationRespository alimentationRespository;
     
     @RequestMapping("/")
     public String index() {
@@ -44,8 +48,9 @@ public class AlimentationController {
     }
 
     @GetMapping("/alimentation")
-    public ResponseEntity<List<Alimentation>> getAlimentation() {
+    public ResponseEntity<List<Alimentation>> getAlimentation(@PathVariable("id") Integer id) {
         List<Alimentation> alimentations = alimentationRespository.findAll();
+
         return new ResponseEntity<List<Alimentation>>(alimentations, HttpStatus.OK);
     }
 
@@ -59,6 +64,16 @@ public class AlimentationController {
         if(newAlimentation!=null){
             this.sendNotification(newAlimentation);
             return new ResponseEntity<Alimentation>(alimentation, HttpStatus.OK);
+        }
+        return new ResponseEntity<Alimentation>(HttpStatus.BAD_REQUEST);
+        
+    }
+    @GetMapping("/alimentation/{id}")
+    public ResponseEntity<Alimentation> getAlimentationById(@PathVariable Integer id) {
+
+        Alimentation newAlimentation= this.alimentationService.getAlimentationById(id);
+        if(newAlimentation!=null){
+            return new ResponseEntity<Alimentation>(newAlimentation, HttpStatus.OK);
         }
         return new ResponseEntity<Alimentation>(HttpStatus.BAD_REQUEST);
         
