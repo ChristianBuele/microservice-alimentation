@@ -30,10 +30,10 @@ public class AlimentationServiceImpl implements AlimentationService {
     public List<Alimentation> findAllAlimentations() {
         List<Alimentation> alimentations = alimentationRespository.findAll();
         List<Alimentation> alimentationsNew=alimentations.stream().map(alimentation->{
-            // List<Product> s = productClient.getProduct(alimentation.getName()).getBody();
-            // System.out.println("llega del hneryyyyyyyyyyy \n\n\n\n");
-            // System.out.println(s);
-            // alimentation.setProductos(s);
+            User user=userClient.getUser(2).getBody();
+            alimentation.setUser(user);
+            List<Product> s =productClient.getProduct(alimentation.getName()).getBody();
+            alimentation.setProductos(s);
             return alimentation;
         }).collect(Collectors.toList());
        
