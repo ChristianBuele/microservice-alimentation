@@ -30,8 +30,10 @@ public class AlimentationServiceImpl implements AlimentationService {
     public List<Alimentation> findAllAlimentations() {
         List<Alimentation> alimentations = alimentationRespository.findAll();
         List<Alimentation> alimentationsNew=alimentations.stream().map(alimentation->{
-            List<Product> products = productClient.getProduct(alimentation.getName()).getBody();
-            alimentation.setProductos(products==null?new ArrayList<Product>():products);
+            // List<Product> s = productClient.getProduct(alimentation.getName()).getBody();
+            // System.out.println("llega del hneryyyyyyyyyyy \n\n\n\n");
+            // System.out.println(s);
+            // alimentation.setProductos(s);
             return alimentation;
         }).collect(Collectors.toList());
        
@@ -41,13 +43,14 @@ public class AlimentationServiceImpl implements AlimentationService {
 
     @Override
     public Alimentation getAlimentationById(Integer id) {
-        // TODO Auto-generated method stub
+        // TODO Auto-generated method
         Alimentation alimentation = alimentationRespository.findById(id).orElse(null);
         if (alimentation != null) {
             User user=userClient.getUser(2).getBody();
             alimentation.setUser(user);
-            List<Product> products=productClient.getProduct(alimentation.getName()).getBody();
-            alimentation.setProductos(products);
+            List<Product> s =productClient.getProduct(alimentation.getName()).getBody();
+            alimentation.setProductos(s);
+    
         }
         return alimentation;
     }

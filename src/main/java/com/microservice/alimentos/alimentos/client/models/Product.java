@@ -1,6 +1,9 @@
 package com.microservice.alimentos.alimentos.client.models;
 
-import java.util.List;
+
+import java.io.Serializable;
+
+import com.google.gson.JsonObject;
 
 import lombok.*;
 
@@ -8,14 +11,12 @@ import lombok.*;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Product {
-   private Long id;
-   private String name;
-   private String quantity;
-   private Long code;
-   private String imageUrl;
-   private List<Object> tags;
-   private List<Object> nutriments;
-   private List<Object> ingredients;
+public class Product implements Serializable {
+   private String id;                      //id
+    private String name;                    //product_name
+    private String quantity;                //quantity
+    private String imageUrl;                //image_front_url
+    private Object nutriments;          //nutriments
+
    
 }
