@@ -50,7 +50,6 @@ public class AlimentationServiceImpl implements AlimentationService {
             alimentation.setUser(user);
             List<Product> s =productClient.getProduct(alimentation.getName()).getBody();
             alimentation.setProductos(s);
-    
         }
         return alimentation;
     }

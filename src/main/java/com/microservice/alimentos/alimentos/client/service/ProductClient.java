@@ -11,7 +11,7 @@ import com.microservice.alimentos.alimentos.client.models.Product;
 
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 
-@FeignClient(name = "productos-service", url = "https://productosmicroapi.herokuapp.com/api")
+@FeignClient(name = "productos-service",url="https://productosmicroapi.herokuapp.com/api/")
 public interface ProductClient {
 
     @CircuitBreaker(name = "productCB",fallbackMethod = "getProductFallback")

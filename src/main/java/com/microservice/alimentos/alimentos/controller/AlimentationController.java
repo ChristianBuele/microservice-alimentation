@@ -61,6 +61,7 @@ public class AlimentationController {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, this.formatMessage(result));
         }
         Alimentation newAlimentation= this.alimentationRespository.save(alimentation);
+        Alimentation aux = this.alimentationService.getAlimentationById(newAlimentation.getId());
         if(newAlimentation!=null){
             this.sendNotification(newAlimentation);
             return new ResponseEntity<Alimentation>(alimentation, HttpStatus.OK);
