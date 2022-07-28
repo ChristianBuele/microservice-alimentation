@@ -6,7 +6,7 @@ import com.microservice.alimentos.alimentos.entity.Alimentation;
 
 public interface AlimentationService {
     
-    public List<Alimentation> findAllAlimentations();
+    public List<Alimentation> findAllAlimentations(Integer page);
     public Alimentation getAlimentationById(Integer id);
     
 }

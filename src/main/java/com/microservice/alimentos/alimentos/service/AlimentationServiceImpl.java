@@ -5,6 +5,10 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.microservice.alimentos.alimentos.client.models.Product;
@@ -27,9 +31,11 @@ public class AlimentationServiceImpl implements AlimentationService {
     UserClient userClient;
 
     @Override
-    public List<Alimentation> findAllAlimentations() {
-        List<Alimentation> alimentations = alimentationRespository.findAll();
-        List<Alimentation> alimentationsNew=alimentations.stream().map(alimentation->{
+    public List<Alimentation> findAllAlimentations(Integer page) {
+        Pageable paging = PageRequest.of(
+            page, 5, Sort.by("createAt").descending());
+        Page<Alimentation> alimentations = alimentationRespository.findAll(paging);
+        List<Alimentation> alimentationsNew=alimentations.getContent().stream().map(alimentation->{
             User user=userClient.getUser(2).getBody();
             alimentation.setUser(user);
             List<Product> s =productClient.getProduct(alimentation.getName()).getBody();

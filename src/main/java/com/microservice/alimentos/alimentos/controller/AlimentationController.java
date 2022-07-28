@@ -21,11 +21,13 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.microservice.alimentos.alimentos.Sockets.model.Message;
+import com.microservice.alimentos.alimentos.client.models.Product;
+import com.microservice.alimentos.alimentos.client.service.ProductClient;
 import com.microservice.alimentos.alimentos.entity.Alimentation;
 import com.microservice.alimentos.alimentos.repository.AlimentationRespository;
 import com.microservice.alimentos.alimentos.service.AlimentationServiceImpl;
@@ -41,6 +43,9 @@ public class AlimentationController {
 
     @Autowired
     private AlimentationRespository alimentationRespository;
+
+    @Autowired
+    private ProductClient productClient;
     
     @RequestMapping("/")
     public String index() {
@@ -48,8 +53,8 @@ public class AlimentationController {
     }
 
     @GetMapping("/alimentation")
-    public ResponseEntity<List<Alimentation>> getAlimentation() {
-        List<Alimentation> alimentations = alimentationService.findAllAlimentations();
+    public ResponseEntity<List<Alimentation>> getAlimentation(@RequestParam(name = "page", defaultValue = "1") int page) {
+        List<Alimentation> alimentations = alimentationService.findAllAlimentations(page);
 
         return new ResponseEntity<List<Alimentation>>(alimentations, HttpStatus.OK);
     }
@@ -60,15 +65,24 @@ public class AlimentationController {
         if (result.hasErrors()){
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, this.formatMessage(result));
         }
+        List<Product> newProducts=productClient.getProduct(alimentation.getName()).getBody();
+        // System.out.println("Nuevos productos: "+newProducts);
+        if(newProducts.size()==0){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "No se encontraron productos con el nombre "+alimentation.getName());
+        }
         Alimentation newAlimentation= this.alimentationRespository.save(alimentation);
-        Alimentation aux = this.alimentationService.getAlimentationById(newAlimentation.getId());
         if(newAlimentation!=null){
             this.sendNotification(newAlimentation);
+            newAlimentation.setProductos(newProducts);
             return new ResponseEntity<Alimentation>(alimentation, HttpStatus.OK);
         }
         return new ResponseEntity<Alimentation>(HttpStatus.BAD_REQUEST);
-        
     }
+
+    // @PostMapping("/alimentation/verify/{}")
+    // public ResponseEntity<Boolean> verifyAlimentation(){
+
+    // }
     @GetMapping("/alimentation/{id}")
     public ResponseEntity<Alimentation> getAlimentationById(@PathVariable Integer id) {
 
