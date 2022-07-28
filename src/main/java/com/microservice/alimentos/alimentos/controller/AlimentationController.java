@@ -53,7 +53,7 @@ public class AlimentationController {
     }
 
     @GetMapping("/alimentation")
-    public ResponseEntity<List<Alimentation>> getAlimentation(@RequestParam(name = "page", defaultValue = "1") int page) {
+    public ResponseEntity<List<Alimentation>> getAlimentation(@RequestParam(name = "page", defaultValue = "0") int page) {
         List<Alimentation> alimentations = alimentationService.findAllAlimentations(page);
 
         return new ResponseEntity<List<Alimentation>>(alimentations, HttpStatus.OK);
