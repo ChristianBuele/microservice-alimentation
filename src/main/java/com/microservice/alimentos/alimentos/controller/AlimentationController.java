@@ -79,10 +79,11 @@ public class AlimentationController {
         return new ResponseEntity<Alimentation>(HttpStatus.BAD_REQUEST);
     }
 
-    // @PostMapping("/alimentation/verify/{}")
-    // public ResponseEntity<Boolean> verifyAlimentation(){
-
-    // }
+    @PostMapping("/alimentation/verify")
+    public ResponseEntity<Object> verifyAlimentation(@RequestParam (name = "comida") Integer comida,@RequestParam(name="usuario") Integer IdUsuario) {
+        System.out.println("Verificando alimento");
+        return ResponseEntity.ok("");
+    }
     @GetMapping("/alimentation/{id}")
     public ResponseEntity<Alimentation> getAlimentationById(@PathVariable Integer id) {
 

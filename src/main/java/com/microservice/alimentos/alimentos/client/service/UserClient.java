@@ -9,16 +9,16 @@ import com.microservice.alimentos.alimentos.client.models.User;
 
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 
-@FeignClient(name = "user-service")
+@FeignClient(name = "user-service",url = "http://54.160.229.191:8081" )
 public interface UserClient {
     
     
     @CircuitBreaker(name = "userCB",fallbackMethod = "getUserFallback")
-    @GetMapping(value = "/users/{id}")
+    @GetMapping(value = "/user/{id}")
     public ResponseEntity<User> getUser(@PathVariable("id") Integer id);
 
     default ResponseEntity<User> getUserFallback(RuntimeException e){
-        User user = User.builder().name("No disponible").build();
+        User user = User.builder().firstName("No disponible").build();
     return ResponseEntity.ok(user);
     }
 }

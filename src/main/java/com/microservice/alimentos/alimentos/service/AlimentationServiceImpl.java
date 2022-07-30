@@ -36,7 +36,7 @@ public class AlimentationServiceImpl implements AlimentationService {
             page, 5, Sort.by("createAt").descending());
         Page<Alimentation> alimentations = alimentationRespository.findAll(paging);
         List<Alimentation> alimentationsNew=alimentations.getContent().stream().map(alimentation->{
-            User user=userClient.getUser(2).getBody();
+            User user=userClient.getUser(alimentation.getUserId()).getBody();
             alimentation.setUser(user);
             List<Product> s =productClient.getProduct(alimentation.getName()).getBody();
             alimentation.setProductos(s);
@@ -52,7 +52,7 @@ public class AlimentationServiceImpl implements AlimentationService {
         // TODO Auto-generated method
         Alimentation alimentation = alimentationRespository.findById(id).orElse(null);
         if (alimentation != null) {
-            User user=userClient.getUser(2).getBody();
+            User user=userClient.getUser(alimentation.getUserId()).getBody();
             alimentation.setUser(user);
             List<Product> s =productClient.getProduct(alimentation.getName()).getBody();
             alimentation.setProductos(s);
