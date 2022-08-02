@@ -1,0 +1,12 @@
+spring:
+  application:
+    name: aliments-service
+  cloud:
+    config:
+        uri: https://config-service-server.herokuapp.com
+        username: root
+        password: s3cr3t
+  boot:
+    admin:
+      client:
+        url: https://admin-service-spring.herokuapp.com/
